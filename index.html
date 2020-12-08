@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+  <title>直書產生器</title>
+</head>
+
+<body>
+  <script>
+    window.straight = {
+      text: '中文直書產生器',
+      convert: (text) => {
+        const pad = '　'
+        const lines = text.split('\n')
+        const maxLength = Math.max(...lines.map(line => line.length))
+        const maxLines = lines.length
+        const lineChars = lines.map(line => line.split(''))
+
+        const result = new Array(maxLength).fill(undefined).map((line, index) =>
+          lineChars.map(line => line[index]).map(char => char || pad).reverse().join('')
+        )
+
+        return result.join('\n')
+      }
+    }
+  </script>
+
+  <div class='flex' x-data='straight'>
+    <textarea class='h-screen w-1/2' x-model='text'></textarea>
+    <pre class='w-1/2 leading-4 tracking-widest' x-text='convert(text)'></pre>
+  </div>
+</body>
+
+</html>
